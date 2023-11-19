@@ -38,7 +38,7 @@
             height: 300px;
             /* border: 2px solid white; */
             background-color: white;
-            animation: roadline infinite linear 3s;
+            /* animation: roadline infinite linear 3s; */
         }
         @keyframes roadline{
             0%{
@@ -50,10 +50,12 @@
         }
         #start{
             position: absolute;
-            top: 60vh;
-            left: 43vw;
+            top: 50%;
+            /* left: 40%; */
             z-index: 100;
             font-size: 2rem;
+            padding: 10px;
+            text-transform: uppercase;
             background-color: red;
             color: white;
             border-radius: 10px;
@@ -64,10 +66,11 @@
             position: absolute;
             top: 20px;
             left: 20px;
-            font-size: 2rem;
+            font-size: 1.5rem;
+            text-transform: uppercase;
             padding: 5px;
-            background-color: wheat;
-            border-radius: 10px;
+            background-color: rgb(255, 255, 255);
+            border-radius: 5px;
         }
         /* #road div{
             width: 100px;
@@ -195,6 +198,8 @@
             document.getElementById("ecar2").style.animation='ecar1 4s linear infinite'
             document.getElementById("ecar3").style.animation='ecar1 3.5s linear infinite'
             document.getElementById("ecar4").style.animation='ecar1 5s linear infinite'
+
+            document.getElementById("road_line").style.animation='roadline infinite linear 3s'
 
             let l=10
             window.addEventListener("keydown",(x)=>{
