@@ -10,8 +10,7 @@
             padding: 0;
         }
         body{
-            background: url(background.png) no-repeat center;
-            background-size: cover;
+            background-color: green;
             height: 100vh;
             width: 100vw;
             display: flex;
@@ -27,7 +26,7 @@
         }
         #road{
             background-color: rgb(32, 32, 32);
-            height: 2000px;
+            height: 100vh;
             width: 300px;
             border: 10px solid red;
             /* z-index: -1; */
@@ -54,7 +53,8 @@
             /* left: 40%; */
             z-index: 100;
             font-size: 2rem;
-            padding: 10px;
+            font-weight: bold;
+            padding: 20px;
             text-transform: uppercase;
             background-color: red;
             color: white;
@@ -72,12 +72,6 @@
             background-color: rgb(255, 255, 255);
             border-radius: 5px;
         }
-        /* #road div{
-            width: 100px;
-            height: 100px;
-            border: 1px solid red;
-            z-index: 100;
-        } */
         
         #ecars{
             position: absolute;
@@ -87,7 +81,6 @@
         #mycar{
             position: absolute;
             bottom: 15%;
-            /* left: 45%; */
         }
         #mycarimg{
             position: relative;
@@ -100,7 +93,7 @@
         .ecars img{
 
             width: 60%;
-            border: 1px solid red;
+            /* border: 1px solid red; */
 
         }
         #ecar1{
@@ -155,6 +148,72 @@
                 top: 100vh;
             }
         } */
+        #leftRightbtn{
+            position: absolute;
+            /* border: 2px solid white; */
+            background-color: white;
+            border-radius: 5px;
+            width: 300px;
+            bottom: 0;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #leftbtn,#rightbtn{
+            cursor: pointer;
+            border: 1px solid rgb(0, 0, 0);
+            border-radius: 5px;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #leftRightbtn img{
+            width: 30%;
+        }
+        #gameOver{
+            position: absolute;
+            width: 280px;
+            /* height: 200px; */
+            padding: 10px;
+            border: 1px solid white;
+            background-color: white;
+            border-radius: 10px;
+            z-index: 111;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            display: none;
+        }
+        #gameoverMsg{
+            background-color: red;
+            padding: 10px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        #finalScore{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            text-transform: uppercase;
+        }
+        #finalScore span{
+            margin-left: 10px;
+        }
+        #ok{
+            padding: 10px;
+            background-color: rgb(28, 238, 28);
+            border-radius: 10px;
+            color: rgb(0, 0, 0);
+            font-weight: 500;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -185,13 +244,29 @@
             </div>
             
         </div>
+        <div id="leftRightbtn">
+            <span id="leftbtn"><img src="left.jpg" alt=""></span>
+            <span id="rightbtn"><img src="right.jpg" alt=""></span>
+        </div>
+
+        <!-- ========== not solved =========== -->
+        <div id="gameOver">
+            <div id="gameoverMsg">Game Over</div>
+            <div id="finalScore">Your score :<span id="finalScoreSpan">0</span></div>
+            <div id="ok">ok</div>
+        </div>
         
     </div>
 
     <script>
         
-                
-        document.getElementById("start").addEventListener("click",()=>{
+        document.getElementById("ok").addEventListener("click",()=>{
+            location.reload()
+        })
+        let start=document.getElementById("start");
+        start.addEventListener("click",starting);
+        
+        function starting(){
             document.getElementById("start").style.display="none"
 
             document.getElementById("ecar1").style.animation='ecar1 5s linear infinite'
@@ -201,18 +276,27 @@
 
             document.getElementById("road_line").style.animation='roadline infinite linear 3s'
 
-            let l=10
+            let key=10
             window.addEventListener("keydown",(x)=>{
                 
-                if(x.keyCode==65){
-                    l=l-10;
+                if(x.keyCode==37){
+                    key=key-10;
                 }
-                if(x.keyCode==68){
-                    l=l+10;
+                if(x.keyCode==39){
+                    key=key+10;
                 }
-                // console.log(l);
-                document.getElementById("mycarimg").style.left=`${l}%`
+                document.getElementById("mycarimg").style.left=`${key}%`
             })
+            let leftRight=10
+            document.getElementById("leftbtn").addEventListener("click",()=>{
+                leftRight=leftRight-10;
+                document.getElementById("mycarimg").style.left=`${leftRight}%`
+            })
+            document.getElementById("rightbtn").addEventListener("click",()=>{
+                leftRight=leftRight+10;
+                document.getElementById("mycarimg").style.left=`${leftRight}%`
+            })
+            let finalscore=0;
             let n=0;
             setInterval(()=>{
                 
@@ -251,7 +335,12 @@
         // console.log(road_left)
                 if(road_left>mycar_left ||road_right<mycar_right){
                     setInterval(()=>{
-                        alert("GAME OVER")
+
+                        alert(`your score : ${Math.floor(n)}`)
+                        
+                        // document.getElementById("gameOver").style.display="block"
+                        // document.getElementById("finalScoreSpan").innerText=`${Math.floor(n)}`
+                        
                     })
                     location.reload()
                 }
@@ -259,39 +348,56 @@
                 if(((ecar1_left<mycar_left && mycar_left<ecar1_right)||(ecar1_left<mycar_right && mycar_right<ecar1_right))&&((ecar1_top<mycar_top && mycar_top<ecar1_bottom)||(ecar1_top<mycar_bottom && mycar_bottom<ecar1_bottom))){
                     
                     setInterval(()=>{
-                        alert("GAME OVER")
-                    })
-                    location.reload()
+
+                        alert(`your score : ${Math.floor(n)}`)
+                        
+                        // document.getElementById("gameOver").style.display="block"
+                        // document.getElementById("finalScoreSpan").innerText=`${Math.floor(n)}`
+                        
+                    });location.reload()
+                    
 
                 }
                 if(((ecar2_left<mycar_left && mycar_left<ecar2_right)||(ecar2_left<mycar_right && mycar_right<ecar2_right))&&((ecar2_top<mycar_top && mycar_top<ecar2_bottom)||(ecar2_top<mycar_bottom && mycar_bottom<ecar2_bottom))){
                     
                     setInterval(()=>{
-                        alert("GAME OVER")
-                    })
-                    location.reload()
+
+                        alert(`your score : ${Math.floor(n)}`)
+                        
+                        // document.getElementById("gameOver").style.display="block"
+                        // document.getElementById("finalScoreSpan").innerText=`${Math.floor(n)}`
+                        
+                    });location.reload()
 
                 }
                 if(((ecar3_left<mycar_left && mycar_left<ecar3_right)||(ecar3_left<mycar_right && mycar_right<ecar3_right))&&((ecar3_top<mycar_top && mycar_top<ecar3_bottom)||(ecar3_top<mycar_bottom && mycar_bottom<ecar3_bottom))){
                     
                     setInterval(()=>{
-                        alert("GAME OVER")
-                    })
-                    location.reload()
+
+                        alert(`your score : ${Math.floor(n)}`)
+                        
+                        // document.getElementById("gameOver").style.display="block"
+                        // document.getElementById("finalScoreSpan").innerText=`${Math.floor(n)}`
+                        
+                    });location.reload()
 
                 }
                 if(((ecar4_left<mycar_left && mycar_left<ecar4_right)||(ecar4_left<mycar_right && mycar_right<ecar4_right))&&((ecar4_top<mycar_top && mycar_top<ecar4_bottom)||(ecar4_top<mycar_bottom && mycar_bottom<ecar4_bottom))){
                     
                     setInterval(()=>{
-                        alert("GAME OVER")
-                    })
-                    location.reload()
+
+                        alert(`your score : ${Math.floor(n)}`)
+                        
+                        // document.getElementById("gameOver").style.display="block"
+                        // document.getElementById("finalScoreSpan").innerText=`${Math.floor(n)}`
+                        
+                    });location.reload()
 
                 }
 
             },100)
 
-        })
+        }
 
         
         
