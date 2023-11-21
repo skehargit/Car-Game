@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Car Race</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap');
         *{
             margin: 0;
             padding: 0;
@@ -17,6 +18,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            font-family: 'Josefin Sans', sans-serif;
         }
         #main{
             width: 500px;
@@ -29,13 +31,14 @@
             height: 100vh;
             width: 300px;
             border: 10px solid red;
-            /* z-index: -1; */
+            position: fixed;
+            z-index: -1;
         }
         #road_line{
             position: absolute;
             width: 10px;
             height: 300px;
-            /* border: 2px solid white; */
+            /* z-index: 1; */
             background-color: white;
             /* animation: roadline infinite linear 3s; */
         }
@@ -48,9 +51,8 @@
             }
         }
         #start{
-            position: absolute;
+            /* position: absolute; */
             top: 50%;
-            /* left: 40%; */
             z-index: 100;
             font-size: 2rem;
             font-weight: bold;
@@ -76,6 +78,7 @@
         #ecars{
             position: absolute;
             top: 10px;
+            /* z-index: 10; */
         }
         
         #mycar{
@@ -93,7 +96,6 @@
         .ecars img{
 
             width: 60%;
-            /* border: 1px solid red; */
 
         }
         #ecar1{
@@ -150,7 +152,6 @@
         } */
         #leftRightbtn{
             position: absolute;
-            /* border: 2px solid white; */
             background-color: white;
             border-radius: 5px;
             width: 300px;
@@ -176,7 +177,6 @@
         #gameOver{
             position: absolute;
             width: 280px;
-            /* height: 200px; */
             padding: 10px;
             border: 1px solid white;
             background-color: white;
@@ -214,6 +214,26 @@
             font-weight: 500;
             text-transform: uppercase;
         }
+        #startingbtn{
+            position: absolute;
+            width: 280px;
+            padding: 10px;
+            border: 1px solid white;
+            background-color: white;
+            border-radius: 10px;
+            z-index: 111;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* display: none; */
+        }
+        #curScore{
+            padding: 10px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -221,7 +241,11 @@
     <div id="main">
         <div id="road_line"></div>
         <div id="score">Score : 0</div>
-        <button id="start">Start</button>
+        <div id="startingbtn">
+            <span id="curScore">High score : <span id="highScore">0</span></span>
+            <button id="start">Start</button>
+        </div>
+        
         <div id="road"></div>
         <div id="ecars">
             <div id="ecar1" class="ecars">
@@ -259,7 +283,14 @@
     </div>
 
     <script>
-        
+        // localStorage.setItem("highScore","0")
+            
+        // console.log(localStorage.getItem("highScore"))
+        if(localStorage.getItem("highScore")==null){
+            document.getElementById("highScore").innerText="0";
+        }else{
+            document.getElementById("highScore").innerText=localStorage.getItem("highScore");
+        }
         document.getElementById("ok").addEventListener("click",()=>{
             location.reload()
         })
@@ -267,12 +298,12 @@
         start.addEventListener("click",starting);
         
         function starting(){
-            document.getElementById("start").style.display="none"
+            document.getElementById("startingbtn").style.display="none"
 
-            document.getElementById("ecar1").style.animation='ecar1 5s linear infinite'
-            document.getElementById("ecar2").style.animation='ecar1 4s linear infinite'
-            document.getElementById("ecar3").style.animation='ecar1 3.5s linear infinite'
-            document.getElementById("ecar4").style.animation='ecar1 5s linear infinite'
+            document.getElementById("ecar1").style.animation='ecar1 7s linear infinite'
+            document.getElementById("ecar2").style.animation='ecar1 6s linear infinite'
+            document.getElementById("ecar3").style.animation='ecar1 5s linear infinite'
+            document.getElementById("ecar4").style.animation='ecar1 8s linear infinite'
 
             document.getElementById("road_line").style.animation='roadline infinite linear 3s'
 
@@ -335,8 +366,13 @@
         // console.log(road_left)
                 if(road_left>mycar_left ||road_right<mycar_right){
                     setInterval(()=>{
-
                         alert(`your score : ${Math.floor(n)}`)
+                        n=Math.floor(n);
+                        if(n>Number(localStorage.getItem("highScore"))){
+                            localStorage.setItem("highScore",JSON.stringify(n))
+                        }
+                        
+                        
                         
                         // document.getElementById("gameOver").style.display="block"
                         // document.getElementById("finalScoreSpan").innerText=`${Math.floor(n)}`
@@ -348,8 +384,12 @@
                 if(((ecar1_left<mycar_left && mycar_left<ecar1_right)||(ecar1_left<mycar_right && mycar_right<ecar1_right))&&((ecar1_top<mycar_top && mycar_top<ecar1_bottom)||(ecar1_top<mycar_bottom && mycar_bottom<ecar1_bottom))){
                     
                     setInterval(()=>{
-
                         alert(`your score : ${Math.floor(n)}`)
+                        n=Math.floor(n);
+                        if(n>Number(localStorage.getItem("highScore"))){
+                            localStorage.setItem("highScore",JSON.stringify(n))
+                        }
+                        // alert(`your score : ${Math.floor(n)}`)
                         
                         // document.getElementById("gameOver").style.display="block"
                         // document.getElementById("finalScoreSpan").innerText=`${Math.floor(n)}`
@@ -361,8 +401,12 @@
                 if(((ecar2_left<mycar_left && mycar_left<ecar2_right)||(ecar2_left<mycar_right && mycar_right<ecar2_right))&&((ecar2_top<mycar_top && mycar_top<ecar2_bottom)||(ecar2_top<mycar_bottom && mycar_bottom<ecar2_bottom))){
                     
                     setInterval(()=>{
-
                         alert(`your score : ${Math.floor(n)}`)
+                        n=Math.floor(n);
+                        if(n>Number(localStorage.getItem("highScore"))){
+                            localStorage.setItem("highScore",JSON.stringify(n))
+                        }
+                        // alert(`your score : ${Math.floor(n)}`)
                         
                         // document.getElementById("gameOver").style.display="block"
                         // document.getElementById("finalScoreSpan").innerText=`${Math.floor(n)}`
@@ -373,8 +417,12 @@
                 if(((ecar3_left<mycar_left && mycar_left<ecar3_right)||(ecar3_left<mycar_right && mycar_right<ecar3_right))&&((ecar3_top<mycar_top && mycar_top<ecar3_bottom)||(ecar3_top<mycar_bottom && mycar_bottom<ecar3_bottom))){
                     
                     setInterval(()=>{
-
                         alert(`your score : ${Math.floor(n)}`)
+                        n=Math.floor(n);
+                        if(n>Number(localStorage.getItem("highScore"))){
+                            localStorage.setItem("highScore",JSON.stringify(n))
+                        }
+                        // alert(`your score : ${Math.floor(n)}`)
                         
                         // document.getElementById("gameOver").style.display="block"
                         // document.getElementById("finalScoreSpan").innerText=`${Math.floor(n)}`
@@ -385,8 +433,12 @@
                 if(((ecar4_left<mycar_left && mycar_left<ecar4_right)||(ecar4_left<mycar_right && mycar_right<ecar4_right))&&((ecar4_top<mycar_top && mycar_top<ecar4_bottom)||(ecar4_top<mycar_bottom && mycar_bottom<ecar4_bottom))){
                     
                     setInterval(()=>{
-
                         alert(`your score : ${Math.floor(n)}`)
+                        n=Math.floor(n);
+                        if(n>Number(localStorage.getItem("highScore"))){
+                            localStorage.setItem("highScore",JSON.stringify(n))
+                        }
+                        // alert(`your score : ${Math.floor(n)}`)
                         
                         // document.getElementById("gameOver").style.display="block"
                         // document.getElementById("finalScoreSpan").innerText=`${Math.floor(n)}`
@@ -399,7 +451,7 @@
 
         }
 
-        
+        // localStorage.clear()
         
     </script>
     
