@@ -63,6 +63,7 @@
             border-radius: 10px;
             cursor: pointer;
             border: none;
+            cursor: pointer;
         }
         #score{
             position: absolute;
@@ -164,12 +165,14 @@
         #leftbtn,#rightbtn{
             cursor: pointer;
             border: 1px solid rgb(0, 0, 0);
+            /* background-color: #484747; */
             border-radius: 5px;
             width: 50%;
             height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
         }
         #leftRightbtn img{
             width: 30%;
@@ -322,6 +325,7 @@
             document.getElementById("leftbtn").addEventListener("click",()=>{
                 leftRight=leftRight-10;
                 document.getElementById("mycarimg").style.left=`${leftRight}%`
+                // document.getElementById("leftbtn").style.backgroundColor="#484747"
             })
             document.getElementById("rightbtn").addEventListener("click",()=>{
                 leftRight=leftRight+10;
